@@ -1,6 +1,19 @@
 {% extends "global/pages/base.html" %}
 
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "main/css/styles.css" %}">
+{% endblock style %}
+
+{% block title %}RPG Center | Início{% endblock title %}
+
 {% block content %}
-    1234
+    {% for group in magic_groups %}
+        {{ group.name }}
+        {% for element in group.elements.all %}
+            {{ element.name }}
+        {% endfor %}
+    {% endfor %}
 {% endblock content %}
 

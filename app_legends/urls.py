@@ -1,6 +1,8 @@
 from django.urls import path
 from app_legends import views
 
+app_name = 'legends'
+
 urlpatterns = [
     path('', views.main_view, name="legends"),
     path('search/', views.main_view, name="search"),
