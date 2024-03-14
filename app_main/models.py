@@ -12,7 +12,7 @@ class Tag(models.Model):
 class RPGSystem(models.Model):
     name = models.CharField(max_length=255)
     ilustration = models.ImageField(upload_to=systems_ilustration_upload)
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):
         return self.name

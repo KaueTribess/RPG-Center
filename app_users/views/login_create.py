@@ -23,12 +23,8 @@ class LoginCreate(View):
             )
 
             if authenticated_user is not None:
-                messages.success(request, 'Logado com sucesso')
                 login(request, authenticated_user)
                 return redirect(home_url)
-            else:
-                messages.error(request, 'Credenciais inválidas')
-        else:
-            messages.error(request, 'Erro ao validar credenciais')
-
+           
+        messages.error(request, 'Credenciais inválidas')
         return redirect(login_url)

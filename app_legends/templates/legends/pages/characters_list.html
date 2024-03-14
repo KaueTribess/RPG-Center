@@ -1,0 +1,25 @@
+{% extends "global/pages/base.html" %}
+
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "global/css/search.css" %}">
+    <link rel="stylesheet" href="{% static "legends/css/characters-list.css" %}">
+{% endblock style %}
+
+{% block title %}Personagens | Legends{% endblock title %}
+
+{% block content %}
+    <h2>Fichas de personagens</h2>
+    {% include "global/partials/search.html" %}
+    <div class="characters-list-container">
+        <div class="characters-list-content">
+            {% for character in characters %}
+                {% include "legends/partials/characters_card.html" %}
+            {% empty %}
+                <p>Nenhum personagem encontrado.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
+

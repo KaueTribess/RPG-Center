@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 class HomeView(View):
     def get(self, request):
-        systems = RPGSystem.objects.all().order_by('-id')
+        systems = RPGSystem.objects.all().order_by('name')
 
         context = {
             'systems': systems

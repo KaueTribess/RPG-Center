@@ -1,0 +1,30 @@
+<div class="profile-dropdown-container main-header-button">
+    <button class="profile-dropdown-dropbtn"> 
+        <i class="fa-solid fa-user"></i>
+    </button>
+    <div class="profile-dropdown-content">
+        {% if request.user.is_authenticated %}
+
+            <p>Olá, {{ request.user.username }}</p>
+
+            <div class="profile-dropdown-separator"></div>
+
+            <a href="/">Perfil</a>
+            <a href="{% url "main:dashboard" %}">Painel</a>
+
+            <div class="profile-dropdown-separator"></div>
+
+            <form action="{% url "users:logout" %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="username" value="{{ request.user.username }}">
+                <button type="submit">Sair</button>
+            </form>
+            
+        {% else %}
+
+            <a href="{% url "users:login_view" %}">Logar</a>
+            <a href="{% url "users:register_view" %}">Criar conta</a>
+
+        {% endif %}
+    </div>
+</div>

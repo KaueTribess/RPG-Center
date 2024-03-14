@@ -3,3 +3,4 @@ from .register_view import RegisterView
 from .register_create import RegisterCreate
 from .login_view import LoginView
 from .login_create import LoginCreate
+from .logout import Logout

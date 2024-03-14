@@ -33,7 +33,7 @@ class MagicElement(models.Model):
 class MagicGroup(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    elements = models.ManyToManyField(MagicElement)
+    elements = models.ManyToManyField(MagicElement, blank=True)
 
     def __str__(self):
         return self.name
@@ -76,13 +76,13 @@ class Item(models.Model):
 class Spell(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    elements = models.ManyToManyField(MagicElement)
+    elements = models.ManyToManyField(MagicElement, blank=True)
     group = models.ForeignKey(MagicGroup, on_delete=models.CASCADE)
     castingTime = models.CharField(max_length=255)
     range = models.CharField(max_length=255)
     manaCost = models.IntegerField()
 
-    ingredientCost = models.ManyToManyField(Item)
+    ingredientCost = models.ManyToManyField(Item, blank=True)
     health = models.IntegerField(blank=True, null=True)
     heal = models.CharField(max_length=255, blank=True, null=True)
     damage = models.CharField(max_length=255, blank=True, null=True)
@@ -96,7 +96,8 @@ class Spell(models.Model):
 
 class Character(models.Model):
     name = models.CharField(max_length=255)
-    lore = models.TextField()
+    title = models.CharField(max_length=100, blank=True)
+    lore = models.TextField(blank=True)
     ilustration = models.ImageField(upload_to=character_ilustration_upload, blank=True, null=True)
 
     level = models.IntegerField()
@@ -114,10 +115,10 @@ class Character(models.Model):
     race = models.ForeignKey(Race, on_delete=models.CASCADE)
     specialization = models.ForeignKey(Specialization, on_delete=models.CASCADE)
     magicGroup = models.ForeignKey(MagicGroup, on_delete=models.CASCADE, null=True)
-    skills = models.ManyToManyField(Skill)
-    spells = models.ManyToManyField(Spell)
+    skills = models.ManyToManyField(Skill, blank=True)
+    spells = models.ManyToManyField(Spell, blank=True)
     
-    createdAt = models.DateTimeField(auto_now_add=True)
+    createdAt = models.DateField(auto_now_add=True)
     public = models.BooleanField(default=False)
 
     def __str__(self):
@@ -172,7 +173,7 @@ class Weapon(models.Model):
     ilustration = models.ImageField(upload_to=weapon_ilustration_upload, blank=True, null=True)
     range = models.CharField(max_length=255)
     weight = models.FloatField()
-    traits = models.ManyToManyField(WeaponTrait)
+    traits = models.ManyToManyField(WeaponTrait, blank=True)
     weaponType = models.ForeignKey(WeaponType, on_delete=models.CASCADE)
     baseDamage = models.CharField(max_length=255)
     damageType = models.ForeignKey(DamageType, on_delete=models.CASCADE)
@@ -210,7 +211,7 @@ class CharacterExpertise(models.Model):
 class CharacterAttribute(models.Model):
     name = models.CharField(max_length=255)
     character = models.ForeignKey(Character, on_delete=models.CASCADE)
-    expertises = models.ManyToManyField(CharacterExpertise)
+    expertises = models.ManyToManyField(CharacterExpertise, blank=True)
     level = models.IntegerField()
 
     def __str__(self):
@@ -219,10 +220,10 @@ class CharacterAttribute(models.Model):
 
 class CharacterProficiencies(models.Model):
     character = models.ForeignKey(Character, on_delete=models.CASCADE)
-    expertises = models.ManyToManyField(Expertise)
-    weapons = models.ManyToManyField(WeaponType)
-    elements = models.ManyToManyField(MagicElement)
-    tools = models.ManyToManyField(Item)
+    expertises = models.ManyToManyField(Expertise, blank=True)
+    weapons = models.ManyToManyField(WeaponType, blank=True)
+    elements = models.ManyToManyField(MagicElement, blank=True)
+    tools = models.ManyToManyField(Item, blank=True)
 
     def __str__(self):
         return self.character.name

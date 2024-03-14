@@ -5,4 +5,5 @@ app_name = 'main'
 
 urlpatterns = [
     path('', views.HomeView.as_view(), name="home"), 
+    path('dashboard/', views.main_view, name="dashboard"),
 ]

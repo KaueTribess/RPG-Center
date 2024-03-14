@@ -40,7 +40,7 @@ class SpellAdmin(admin.ModelAdmin):
 
 @admin.register(Character)
 class CharacterAdmin(admin.ModelAdmin):
-    ...
+    list_display = ['name', 'level', 'race', 'specialization', 'creator', 'public']
 
 @admin.register(Inventory)
 class InventoryAdmin(admin.ModelAdmin):

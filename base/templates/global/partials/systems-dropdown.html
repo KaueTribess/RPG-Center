@@ -1,0 +1,10 @@
+<div class="system-dropdown-container main-header-button">
+    <button class="system-dropdown-dropbtn"> 
+        Sistemas <i class="fa-solid fa-angle-down"></i>
+    </button>
+    <div class="system-dropdown-content">
+        {% for system in systems %}
+            <a href="/">{{ system.name }}</a>
+        {% endfor %}
+    </div>
+</div>
