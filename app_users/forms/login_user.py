@@ -9,10 +9,12 @@ class LoginUserForm(forms.Form):
 
         self.fields['username'].label = 'Nome de usuário'
         self.fields['username'].required = True
+        self.fields['username'].widget.attrs = {'class': 'span-2',}
 
         self.fields['password'].label = 'Senha'
         self.fields['password'].required = True
         self.fields['password'].widget = forms.PasswordInput()
+        self.fields['password'].widget.attrs = {'class': 'span-2',}
         
     username = forms.CharField()
     password = forms.CharField()

@@ -1,0 +1,17 @@
+{% extends "global/pages/base.html" %}
+
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "legends/css/character-sheet.css" %}">
+{% endblock style %}
+
+{% block title %}{{ character.name }} | Legends{% endblock title %}
+
+{% block content %}
+    <h2>Ficha - {{ character.name }}</h2>
+    <div class="character-sheet-container">
+        
+    </div>
+{% endblock content %}
+

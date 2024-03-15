@@ -1,5 +1,5 @@
 <div class="character-card">
-    <a href="">
+    <a href="{% url "legends:character_sheet" character.id %}">
         <div class="character-ilustration">
             <img src="{{ character.ilustration.url }}" alt="">
         </div>

@@ -1,0 +1,16 @@
+{% extends "global/pages/base.html" %}
+
+{% load static %}
+
+{% block style %}
+    {% include "global/partials/crop.html" %}
+    <link rel="stylesheet" href="{% static "legends/css/forms.css" %}">
+    <link rel="stylesheet" href="{% static "legends/css/character-edit.css" %}">
+{% endblock style %}
+
+{% block title %}{{ character.name }} | Legends{% endblock title %}
+
+{% block content %}
+    {% include "global/partials/form.html" %}
+{% endblock content %}
+

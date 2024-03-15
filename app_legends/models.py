@@ -99,19 +99,9 @@ class Character(models.Model):
     title = models.CharField(max_length=100, blank=True)
     lore = models.TextField(blank=True)
     ilustration = models.ImageField(upload_to=character_ilustration_upload, blank=True, null=True)
-
     level = models.IntegerField()
-    movement = models.FloatField()
-    health = models.IntegerField()
-    mana = models.IntegerField
-    passivePerception = models.IntegerField()
-    armorClass = models.IntegerField()
-
-    maxWeight = models.FloatField()
-    currentWeight = models.FloatField()
-    weightStatus = models.CharField(max_length=255)
-
-    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    creator = models.ForeignKey(User, related_name='creator_user', on_delete=models.CASCADE)
+    editor = models.ForeignKey(User, related_name='editor_user', blank=True, null=True, on_delete=models.CASCADE)
     race = models.ForeignKey(Race, on_delete=models.CASCADE)
     specialization = models.ForeignKey(Specialization, on_delete=models.CASCADE)
     magicGroup = models.ForeignKey(MagicGroup, on_delete=models.CASCADE, null=True)
@@ -177,6 +167,7 @@ class Weapon(models.Model):
     weaponType = models.ForeignKey(WeaponType, on_delete=models.CASCADE)
     baseDamage = models.CharField(max_length=255)
     damageType = models.ForeignKey(DamageType, on_delete=models.CASCADE)
+    Modifier = models.ForeignKey(Modifier, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -187,6 +178,7 @@ class CharacterWeapon(models.Model):
     weapon = models.ForeignKey(Weapon, on_delete=models.CASCADE)
     amount = models.IntegerField()
     weight = models.FloatField()
+    Modifier = models.ForeignKey(Modifier, on_delete=models.CASCADE)
     finalDamage = models.CharField(max_length=255)
 
     def __str__(self):
@@ -217,6 +209,23 @@ class CharacterAttribute(models.Model):
     def __str__(self):
         return f'{self.character.name} - {self.name}'
     
+
+class CharacterStats(models.Model):
+    character = models.ForeignKey(Character, on_delete=models.CASCADE)
+    atributes = models.ManyToManyField(CharacterAttribute, blank=True)
+    movement = models.FloatField()
+    health = models.IntegerField()
+    mana = models.IntegerField()
+    passivePerception = models.IntegerField()
+    armorClass = models.IntegerField()
+
+    maxWeight = models.FloatField()
+    currentWeight = models.FloatField()
+    weightStatus = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f'{self.character.name}'
+
 
 class CharacterProficiencies(models.Model):
     character = models.ForeignKey(Character, on_delete=models.CASCADE)

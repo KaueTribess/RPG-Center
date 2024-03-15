@@ -42,6 +42,10 @@ class SpellAdmin(admin.ModelAdmin):
 class CharacterAdmin(admin.ModelAdmin):
     list_display = ['name', 'level', 'race', 'specialization', 'creator', 'public']
 
+@admin.register(CharacterStats)
+class CharacterStatsAdmin(admin.ModelAdmin):
+    ...
+
 @admin.register(Inventory)
 class InventoryAdmin(admin.ModelAdmin):
     ...

@@ -14,7 +14,6 @@ class LoginView(View):
             'form': form,
             'form_title': 'Entrar',
             'form_action': reverse('users:login_create'),
-            'form_class': 'form-large',
         }
 
         return render(request, 'users/pages/login_user.html', context)
