@@ -1,0 +1,14 @@
+{% extends "global/pages/base.html" %}
+
+{% load static %}
+
+{% block style %}
+    {% comment %} <link rel="stylesheet" href="{% static "legends/css/character-sheet.css" %}"> {% endcomment %}
+    {% include "global/partials/crop.html" %}
+{% endblock style %}
+
+{% block title %}Editar imagem{% endblock title %}
+
+{% block content %}
+    {% include "global/partials/crop-form.html" %}
+{% endblock content %}

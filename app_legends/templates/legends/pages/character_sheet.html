@@ -9,9 +9,26 @@
 {% block title %}{{ character.name }} | Legends{% endblock title %}
 
 {% block content %}
-    <h2>Ficha - {{ character.name }}</h2>
+    <h2 class="character-sheet-name">{{ character.name }}{% if character.title %}, {{ character.title }}{% endif %}</h2>
     <div class="character-sheet-container">
-        
+        <div class="character-sheet-header">
+            <div class="character-sheet-ilustration">
+                {% include "legends/partials/character-sheet-ilustration.html" %}
+            </div>
+            <div class="character-sheet-points">
+                <div class="character-sheet-attributes">
+                    {% for attr in char_attrs %}
+                        {% include "legends/partials/character-sheet-attribute-card.html" %}
+                    {% endfor %}
+                </div>
+                <div class="character-sheet-expertises">
+                    {% include "legends/partials/character-sheet-expertises.html" %}
+                </div>
+            </div>
+        </div>
+        <div class="character-sheet-stats">
+
+        </div>
     </div>
 {% endblock content %}
 

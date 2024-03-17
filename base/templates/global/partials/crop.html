@@ -1,3 +1,7 @@
-<script src="/path/to/jquery.js"></script><!-- jQuery is required -->
-<link  href="/path/to/cropper.css" rel="stylesheet">
-<script src="/path/to/cropper.js"></script>
+{% load static %}
+
+<script src="{% static "jquery\dist\jquery.js" %}"></script><!-- jQuery is required -->
+<link  href="{% static "cropper\dist\cropper.css" %}" rel="stylesheet">
+<script src="{% static "cropper\dist\cropper.js" %}"></script>
+
+<script src="{% static "global/js/crop.js" %}" defer></script>

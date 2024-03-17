@@ -1,0 +1,27 @@
+{% for attr in char_attrs %}
+    <div class="character-sheet-expertises-column">
+        <div class="character-sheet-expertises-title">
+            <h3>{{ attr.name }}:</h3>
+            <p>{{ attr.remaining }}</p>
+        </div>
+        {% for expertise in attr.expertises.all %}
+            <div class="expertise">
+                <p>{{ expertise.expertise }}: {{expertise.level}}</p>
+                <form action="{% url "legends:character_edit_expertise" character.id %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="attribute_id" value="{{ attr.id }}">
+                    <input type="hidden" name="expertise_id" value="{{ expertise.id }}">
+                    <input type="hidden" name="type" value="decrease">
+                    <button class="expertise-edit-button"><i class="fa-solid fa-minus"></i></button>
+                </form>
+                <form action="{% url "legends:character_edit_expertise" character.id %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="attribute_id" value="{{ attr.id }}">
+                    <input type="hidden" name="expertise_id" value="{{ expertise.id }}">
+                    <input type="hidden" name="type" value="raise">
+                    <button class="expertise-edit-button"><i class="fa-solid fa-plus"></i></button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}

@@ -15,14 +15,10 @@ class CharacterEditForm(forms.ModelForm):
         self.fields['lore'].label = 'História'
         self.fields['lore'].widget.attrs = {'class': 'span-2',}
 
-        self.fields['ilustration'].label = 'Nova imagem'
-        self.fields['ilustration'].widget = forms.FileInput()
-        self.fields['ilustration'].widget.attrs = {'class': 'span-2 no-change',}
-
         self.fields['public'].label = 'Público:'
         self.fields['public'].help_text = 'Ao marcar este campo você não poderá mais editar este personagem!'
         self.fields['public'].widget.attrs = {'class': 'warning checkbox no-change span-2',}
 
     class Meta:
         model = Character
-        fields = 'name', 'title', 'race', 'specialization', 'level', 'magicGroup', 'lore', 'ilustration', 'public'
+        fields = 'name', 'title', 'race', 'specialization', 'level', 'magicGroup', 'lore', 'public'

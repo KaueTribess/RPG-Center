@@ -193,11 +193,12 @@ class Expertise(models.Model):
 
 
 class CharacterExpertise(models.Model):
+    character = models.ForeignKey(Character, on_delete=models.CASCADE)
     expertise = models.ForeignKey(Expertise, on_delete=models.CASCADE)
     level = models.IntegerField()
 
     def __str__(self):
-        return f'{self.expertise.name}'
+        return f'{self.character.name} - {self.expertise.name}'
     
 
 class CharacterAttribute(models.Model):
@@ -205,9 +206,17 @@ class CharacterAttribute(models.Model):
     character = models.ForeignKey(Character, on_delete=models.CASCADE)
     expertises = models.ManyToManyField(CharacterExpertise, blank=True)
     level = models.IntegerField()
+    remaining = models.IntegerField()
 
     def __str__(self):
         return f'{self.character.name} - {self.name}'
+    
+    def save(self, *args, **kwargs):
+        used_points = 0
+        for expertise in self.expertises.all():
+            used_points += expertise.level + 1
+        self.remaining = self.level - used_points
+        super(CharacterAttribute, self).save(*args, **kwargs)
     
 
 class CharacterStats(models.Model):

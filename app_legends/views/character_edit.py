@@ -4,7 +4,7 @@ from django.urls import reverse
 from app_legends.models import Character
 from app_legends.forms import CharacterEditForm
 from app_main.models import RPGSystem
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.contrib import messages
 
 class CharacterEdit(View):
@@ -50,7 +50,6 @@ class CharacterEdit(View):
         )
 
         if form.is_valid():
-            print('valido')
             character = form.save(commit=False)
             if not character.creator:
                 character.creator = request.user
@@ -58,8 +57,8 @@ class CharacterEdit(View):
                 character.editor = request.user
             
             character.save()
-
+            
             messages.success(request, 'Personagem editado com sucesso!')
-        # return redirect(reverse('legends:character_sheet', kwargs={'id': id}))
-        return redirect(reverse('legends:character_edit', kwargs={'id': id}))
+            
+        return redirect(reverse('legends:character_sheet', kwargs={'id': id}))
     

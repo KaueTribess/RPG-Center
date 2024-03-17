@@ -1,0 +1,11 @@
+<div class="crop-form-container">
+    <form action="" id="image-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+    </form>
+    <div id="image-box"></div>
+    <div class="buttons">
+        <button class="not-visible" id="confirm-btn">Confirmar</button>
+        <a href="{{ return }}">Voltar</a>
+    </div>
+</div>

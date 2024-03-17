@@ -1,0 +1,18 @@
+{% if character.ilustration.url and character.editor == request.user %}
+    <div class="ilustration">
+        <a href="{% url "legends:character_edit_image" character.id %}">
+            <img src="{{ character.ilustration.url }}" alt="">
+        </a>
+    </div>
+{% elif character.editor == request.user %}
+    <div class="ilustration no-image">
+        <a href="{% url "legends:character_edit_image" character.id %}">
+            <p>Nenhuma imagem encontrada!</p>
+            <p>Clique aqui para adicionar uma ilustração para {{ character.name }}.</p>
+        </a>
+    </div>
+{% else %}
+    <div class="ilustration">
+        <img src="{{ character.ilustration.url }}" alt="">
+    </div>
+{% endif %}
