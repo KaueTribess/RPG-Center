@@ -1,7 +1,7 @@
 from django.views import View
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from app_legends.models import Character
+from app_legends.models import Character, CharacterStats
 from app_legends.forms import CharacterEditForm
 from app_main.models import RPGSystem
 from django.http import Http404, JsonResponse
@@ -42,6 +42,7 @@ class CharacterEdit(View):
     
     def post(self, request, id):
         character = self.get_character(request, id)
+        character_stats = CharacterStats.objects.filter(character=character).first()
 
         form = CharacterEditForm(
             request.POST or None,
@@ -57,6 +58,7 @@ class CharacterEdit(View):
                 character.editor = request.user
             
             character.save()
+            character_stats.save()
             
             messages.success(request, 'Personagem editado com sucesso!')
             

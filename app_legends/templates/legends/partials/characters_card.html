@@ -12,7 +12,7 @@
     </a>
     <div class="character-info">
         <div class="character-race">
-            <a href="">{{ character.race.name }}</a>
+            <a href="{% url "legends:race" character.race.id %}">{{ character.race.name }}</a>
         </div>
         <div class="character-class">
             <a href="">{{ character.specialization.name }}</a>

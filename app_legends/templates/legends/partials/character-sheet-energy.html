@@ -1,0 +1,19 @@
+
+<div class="energy-stats">
+    EP<i class="fa-solid fa-bolt"></i>
+    <form action="{% url 'legends:character_edit_stats' character.id %}" method="POST" class="energy-form">
+        {% csrf_token %}
+        <div class="energy-bar">
+            <div class="energy-values">
+                <div id="energy-current">
+                    <input type="hidden" name="type" value="energy">
+                    <input type="text" name="current_ep" id="energy-input" value="{{ char_stats.currentEP }}">
+                </div> / 
+                <div id="energy-max">
+                    {{ char_stats.maxEP }}
+                </div>
+            </div>
+            <div id="inner-energy-bar"></div>
+        </div>
+    </form>
+</div>

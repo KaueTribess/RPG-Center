@@ -1,0 +1,43 @@
+{% extends "global/pages/base.html" %}
+
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "legends/css/race-sheet.css" %}">
+{% endblock style %}
+
+{% block title %}{{ race.name }} | Legends{% endblock title %}
+
+{% block content %}
+    <h1 class="race-sheet-name">{{ race.name }}</h1>
+    <h2 class="race-sheet-title">{{ race.title }}</h2>
+    <div class="race-sheet-container">
+        <div class="race-sheet-header">
+            <div class="race-sheet-ilustration">
+                <img src="{{ race.ilustration.url }}" alt="">
+            </div>
+            <div class="race-sheet-description">
+                <p>{{ race.description }}</p>
+            </div>
+        </div>
+        {% include "legends/partials/race-sheet-traits.html" %}
+        <div class="race-sheet-skills">
+            <h2 class="race-sheet-title border-bt">Habilidades da raça</h2>
+            <div class="race-sheet-skills-list">
+                {% for skill in skills %}
+                    <div class="race-sheet-skills-grid-item">
+                        <h3>{{ skill.name }}</h3>
+                        <div class="race-sheet-skills-grid-content">
+                            <p>{{ skill.description }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="message span-2">
+                        <p>Essa raça não possui nenhuma habilidade.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+

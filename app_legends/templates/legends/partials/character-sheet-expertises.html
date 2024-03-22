@@ -8,18 +8,22 @@
             <div class="expertise">
                 <p>{{ expertise.expertise }}: {{expertise.level}}</p>
                 <form action="{% url "legends:character_edit_expertise" character.id %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="attribute_id" value="{{ attr.id }}">
-                    <input type="hidden" name="expertise_id" value="{{ expertise.id }}">
-                    <input type="hidden" name="type" value="decrease">
-                    <button class="expertise-edit-button"><i class="fa-solid fa-minus"></i></button>
+                    {% if expertise.level > -1 %}
+                        {% csrf_token %}
+                        <input type="hidden" name="attribute_id" value="{{ attr.id }}">
+                        <input type="hidden" name="expertise_id" value="{{ expertise.id }}">
+                        <input type="hidden" name="type" value="decrease">
+                        <button class="expertise-edit-button"><i class="fa-solid fa-minus"></i></button>
+                    {% endif %}
                 </form>
                 <form action="{% url "legends:character_edit_expertise" character.id %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="attribute_id" value="{{ attr.id }}">
-                    <input type="hidden" name="expertise_id" value="{{ expertise.id }}">
-                    <input type="hidden" name="type" value="raise">
-                    <button class="expertise-edit-button"><i class="fa-solid fa-plus"></i></button>
+                    {% if attr.remaining > 0 and expertise.level < 10 %}
+                        {% csrf_token %}
+                        <input type="hidden" name="attribute_id" value="{{ attr.id }}">
+                        <input type="hidden" name="expertise_id" value="{{ expertise.id }}">
+                        <input type="hidden" name="type" value="raise">
+                        <button class="expertise-edit-button"><i class="fa-solid fa-plus"></i></button>
+                    {% endif %}
                 </form>
             </div>
         {% endfor %}

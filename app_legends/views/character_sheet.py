@@ -1,7 +1,7 @@
 from django.views import View
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from app_legends.models import Character, CharacterAttribute, CharacterExpertise
+from app_legends.models import Character, CharacterAttribute, CharacterExpertise, CharacterStats
 from app_main.models import RPGSystem
 from django.http import Http404
 
@@ -22,6 +22,9 @@ class CharacterSheet(View):
         character_expertises = CharacterExpertise.objects.filter(
             character=character
         ).order_by('id')
+        character_stats = CharacterStats.objects.filter(
+            character=character
+        ).first()
         
         context = {
             'systems': systems,
@@ -29,6 +32,7 @@ class CharacterSheet(View):
             'character': character,
             'char_attrs': character_attributes,
             'char_exper': character_expertises,
+            'char_stats': character_stats,
         }
 
         return render(request, 'legends/pages/character_sheet.html', context)

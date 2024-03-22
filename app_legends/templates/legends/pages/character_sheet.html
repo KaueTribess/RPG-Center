@@ -4,6 +4,7 @@
 
 {% block style %}
     <link rel="stylesheet" href="{% static "legends/css/character-sheet.css" %}">
+    <script src="{% static "legends/js/stats-bar.js" %}"></script>
 {% endblock style %}
 
 {% block title %}{{ character.name }} | Legends{% endblock title %}
@@ -26,8 +27,49 @@
                 </div>
             </div>
         </div>
-        <div class="character-sheet-stats">
-
+        <div class="stats">
+            <div class="main-stats">
+                {% include "legends/partials/character-sheet-health.html" %}
+                <div class="stats-group">
+                    <div class="armor-stats">
+                        CA<i class="fa-solid fa-shield"></i><div class="armor-points">{{ char_stats.armorClass }}</div>
+                    </div>
+                    <div class="perception-stats">
+                        PP<i class="fa-solid fa-eye"></i><div class="perception-points">{{ char_stats.passivePerception }}</div>
+                    </div>
+                </div>
+                <div class="stats-group">
+                    <div class="attribute-stats">
+                        PA<i class="fa-solid fa-file-lines"></i><div class="attribute-points">{{ character.remainingPoints }}</div>
+                    </div>
+                    <div class="level-stats">
+                        Nível<i class="fa-solid fa-dice-d20"></i>
+                        <div class="level-points">
+                            <form action="{% url "legends:character_edit_level" character.id %}" method="POST" class="level-form">
+                                {% csrf_token %}
+                                <input type="text" name="level" value="{{ character.level }}">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% include "legends/partials/character-sheet-energy.html" %}
+                <div class="stats-group">
+                    <div class="movement-stats">
+                        BP<i class="fa-solid fa-angles-up"></i><div class="movement-points">+ {{ character.proficiency }}</div> 
+                    </div>
+                    <div class="movement-stats">
+                        VM<i class="fa-solid fa-person-walking"></i><div class="movement-points">{{ char_stats.movement }} M.</div> 
+                    </div>
+                </div>
+                <div class="stats-group">
+                    <div class="race-stats">
+                        Raça<i class="fa-solid fa-person"></i><div class="race-points">{{ character.race }}</div> 
+                    </div>
+                    <div class="specialization-stats">
+                        Classe<i class="fa-solid fa-screwdriver-wrench"></i><div class="specialization-points">{{ character.specialization }}</div> 
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock content %}

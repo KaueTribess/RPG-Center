@@ -1,0 +1,51 @@
+<div class="race-sheet-traits">
+    <h2 class="race-sheet-title border-bt">Características da raça</h2>
+    <div class="race-sheet-traits-list">
+        <div class="race-sheet-traits-grid-item">
+            <h3>Idade</h3>
+            <div class="race-sheet-traits-grid-content">
+                <p>{{ race.age }}</p>
+            </div>
+        </div>
+        <div class="race-sheet-traits-grid-item">
+            <h3>Tamanho</h3>
+            <div class="race-sheet-traits-grid-content">
+                <p>{{ race.height }}</p>
+            </div>
+        </div>
+        <div class="race-sheet-traits-grid-item">
+            <h3>Deslocamento</h3>
+            <div class="race-sheet-traits-grid-content">
+                <p>Possuem um deslocamento base de caminhada de {{ race.baseMovement }} metros.</p>
+            </div>
+        </div>
+        <div class="race-sheet-traits-grid-item">
+            <h3>Tipo de corpo</h3>
+            <div class="race-sheet-traits-grid-content">
+                <p>Possuem um corpo do tipo {{ race.bodyType }}.</p>
+            </div>
+        </div>
+        <div class="race-sheet-traits-grid-item">
+            <h3>Aumento de pontuação</h3>
+            <div class="race-sheet-traits-grid-content">
+                <p>
+                    Seu atributo de {{ race.attributeIncrease1 }} aumenta em {{ race.attributeIncreaseValue1 }}
+                    {% if race.attributeIncrease2 %}
+                        e seu atributo de {{ race.attributeIncrease2 }} aumenta em {{ race.attributeIncreaseValue2 }}
+                    {% endif %}
+                    .
+                </p>
+            </div> 
+        </div>
+        <div class="race-sheet-traits-grid-item">
+            <h3>Afinidade mágica</h3>
+            <div class="race-sheet-traits-grid-content">
+                {% if race.magicAffinity %}
+                    <p>Possuem uma afinidade mais voltada para o grupo {{ race.magicAffinity }}.</p>
+                {% else %}
+                    <p>Não possuem afinidade com nenhum elemento especifico por conta de sua raça.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

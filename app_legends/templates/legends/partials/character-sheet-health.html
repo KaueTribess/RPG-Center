@@ -1,0 +1,18 @@
+<div class="health-stats">
+    HP<i class="fa-solid fa-heart"></i>
+    <form action="{% url 'legends:character_edit_stats' character.id %}" method="POST" class="health-form">
+        {% csrf_token %}
+        <div class="health-bar">
+            <div class="health-values">
+                <div id="health-current">
+                    <input type="hidden" name="type" value="health">
+                    <input type="text" name="current_hp" id="health-input" value="{{ char_stats.currentHP }}">
+                </div> / 
+                <div id="health-max">
+                    {{ char_stats.maxHP }}
+                </div>
+            </div>
+            <div id="inner-health-bar"></div>
+        </div>
+    </form>
+</div>
