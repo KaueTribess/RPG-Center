@@ -1,6 +1,7 @@
 from django.views import View
 from django.shortcuts import render, redirect
 from django.db.models import Q
+from app_legends.forms import CharacterEditSkillsForm
 from app_legends.models import Character, CharacterAttribute, CharacterExpertise, CharacterStats
 from app_main.models import RPGSystem
 from django.http import Http404
@@ -25,6 +26,11 @@ class CharacterSheet(View):
         character_stats = CharacterStats.objects.filter(
             character=character
         ).first()
+
+        skills_form = CharacterEditSkillsForm(
+            request.POST or None,
+            instance=character
+        )
         
         context = {
             'systems': systems,
@@ -33,6 +39,7 @@ class CharacterSheet(View):
             'char_attrs': character_attributes,
             'char_exper': character_expertises,
             'char_stats': character_stats,
+            'skills_form': skills_form,
         }
 
         return render(request, 'legends/pages/character_sheet.html', context)

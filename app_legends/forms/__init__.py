@@ -1,2 +1,3 @@
 from .character_edit import CharacterEditForm
 from .character_edit_image import CharacterEditImageForm
+from .character_edit_skills import CharacterEditSkillsForm

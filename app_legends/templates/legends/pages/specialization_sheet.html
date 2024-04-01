@@ -1,0 +1,39 @@
+{% extends "global/pages/base.html" %}
+
+{% load static %}
+
+{% block style %}
+    {% comment %} <link rel="stylesheet" href="{% static "legends/css/specialization-sheet.css" %}"> {% endcomment %}
+{% endblock style %}
+
+{% block title %}{{ specialization.name }} | Legends{% endblock title %}
+
+{% block content %}
+    <h1 class="specialization-sheet-name">{{ specialization.name }}</h1>
+    <h2 class="specialization-sheet-title">{{ specialization.title }}</h2>
+    <div class="specialization-sheet-container">
+        <div class="specialization-sheet-header">
+            <div class="specialization-sheet-ilustration">
+                <img src="{{ specialization.ilustration.url }}" alt="">
+            </div>
+            <div class="specialization-sheet-description">
+                <p>{{ specialization.description }}</p>
+            </div>
+        </div>
+        {% include "legends/partials/specialization-sheet-traits.html" %}
+        <div class="specialization-sheet-skills">
+            <h2 class="specialization-sheet-title border-bt">Habilidades da raça</h2>
+            <div class="specialization-sheet-skills-list">
+                {% for skill in skills %}
+                    <div class="specialization-sheet-skills-grid-item">
+                        <h3>{{ skill.name }}</h3>
+                        <div class="specialization-sheet-skills-grid-content">
+                            <p>{{ skill.description }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+

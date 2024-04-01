@@ -6,7 +6,13 @@ from app_legends.forms import CharacterEditForm
 from app_main.models import RPGSystem
 from django.http import Http404, JsonResponse
 from django.contrib import messages
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
+@method_decorator(
+    login_required(login_url='users:login_view', redirect_field_name='next'),
+    name='dispatch'
+)
 class CharacterEdit(View):
 
     def get_character(self, request, id):

@@ -1,0 +1,19 @@
+{% extends "global/pages/base.html" %}
+
+{% load static %}
+
+{% block style %}
+    {% comment %} <link rel="stylesheet" href="{% static "legends/css/race-sheet.css" %}"> {% endcomment %}
+{% endblock style %}
+
+{% block title %}{{ skill.name }} | Legends{% endblock title %}
+
+{% block content %}
+    <h1 class="skill-sheet-name">{{ skill.name }}</h1>
+    <div class="skill-sheet-container">
+        <div class="skill-sheet-description">
+            <p>{{ skill.description }}</p>
+        </div>
+    </div>
+{% endblock content %}
+

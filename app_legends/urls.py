@@ -13,10 +13,11 @@ urlpatterns = [
     path('character/edit/expertise/<int:id>/', views.CharacterEditExpertise.as_view(), name="character_edit_expertise"),
     path('character/edit/stats/<int:id>/', views.CharacterEditStatsBars.as_view(), name="character_edit_stats"),
     path('character/edit/level/<int:id>/', views.CharacterEditLevel.as_view(), name="character_edit_level"),
+    path('character/edit/skills/<int:id>/', views.CharacterEditSkills.as_view(), name="character_edit_skills"),
     path('race/<int:id>/', views.RaceSheet.as_view(), name="race"),
     path('specialization/<int:id>/', views.main_view, name="specialization"),
+    path('skill/<int:id>/', views.SkillSheet.as_view(), name="skill"),
     path('spell/<int:id>/', views.main_view, name="spell"),
     path('item/<int:id>/', views.main_view, name="item"),
-    path('skill/<int:id>/', views.main_view, name="skill"),
     path('search/', views.main_view, name="search"),
 ]
