@@ -12,3 +12,4 @@ from .character_edit_skills import CharacterEditSkills
 from .race_sheet import RaceSheet
 from .specialization_sheet import SpecializationSheet
 from .skill_sheet import SkillSheet
+from .spell_sheet import SpellSheet

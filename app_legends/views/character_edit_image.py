@@ -59,4 +59,4 @@ def character_edit_image(request, id):
         'form': form,
         'return': reverse('legends:character_sheet', args={id,}),
     }
-    return render(request, 'legends/pages/character_edit_image.html', context)
+    return render(request, 'legends/pages/character-edit-image.html', context)

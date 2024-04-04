@@ -17,5 +17,5 @@ class CharactersList(View):
             'characters': characters,
         }
 
-        return render(request, 'legends/pages/characters_list.html', context)
+        return render(request, 'legends/pages/characters-list.html', context)
     

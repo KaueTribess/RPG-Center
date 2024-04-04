@@ -21,4 +21,4 @@ class RaceSheet(View):
             'skills': skills,
         }
 
-        return render(request, 'legends/pages/race_sheet.html', context)
+        return render(request, 'legends/pages/race-sheet.html', context)

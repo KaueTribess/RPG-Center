@@ -1,6 +1,6 @@
 
 <div class="energy-stats">
-    EP<i class="fa-solid fa-bolt"></i>
+    MP<i class="fa-solid fa-bolt"></i>
     <form action="{% url 'legends:character_edit_stats' character.id %}" method="POST" class="energy-form">
         {% csrf_token %}
         <div class="energy-bar">

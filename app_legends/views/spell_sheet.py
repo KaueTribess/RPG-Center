@@ -1,25 +1,22 @@
 from django.views import View
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from app_legends.models import Specialization
+from app_legends.models import Spell
 from app_main.models import RPGSystem
 from django.http import Http404
 
-class SpecializationSheet(View):
+class SpellSheet(View):
 
     def get(self, request, id):
         systems = RPGSystem.objects.all().order_by('name')
-        specialization = Specialization.objects.filter(id=id).first()
-        if not specialization:
+        spell = Spell.objects.filter(id=id).first()
+        if not spell:
             raise Http404()
-        skills = specialization.skills.all().order_by('name')
         
         context = {
             'systems': systems,
             'header_title': 'Legends',
-            'specialization': specialization,
-            'skills': skills,
+            'spell': spell,
         }
 
-        return render(request, 'legends/pages/specialization-sheet.html', context)
-        
+        return render(request, 'legends/pages/spell-sheet.html', context)

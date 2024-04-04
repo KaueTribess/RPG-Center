@@ -44,7 +44,7 @@ class CharacterEdit(View):
             'character': character,
         }
 
-        return render(request, 'legends/pages/character_edit.html', context)
+        return render(request, 'legends/pages/character-edit.html', context)
     
     def post(self, request, id):
         character = self.get_character(request, id)

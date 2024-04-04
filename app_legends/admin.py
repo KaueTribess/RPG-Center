@@ -70,6 +70,10 @@ class WeaponTypeAdmin(admin.ModelAdmin):
 class WeaponAdmin(admin.ModelAdmin):
     ...
 
+@admin.register(Armor)
+class ArmorAdmin(admin.ModelAdmin):
+    ...
+
 @admin.register(CharacterWeapon)
 class CharacterWeaponAdmin(admin.ModelAdmin):
     ...

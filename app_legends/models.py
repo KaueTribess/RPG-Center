@@ -111,6 +111,48 @@ class Skill(models.Model):
         ordering = ['name']
 
 
+class Armor(models.Model):
+    class ArmorTypeName(models.TextChoices):
+        Leve = 'Leve', _('Leve')
+        Media = 'Média', _('Média')
+        Pesada = 'Pesada', _('Pesada')
+
+    name = models.CharField(max_length=255)
+    armorType = models.CharField(max_length=7, choices=ArmorTypeName.choices, default=ArmorTypeName.Media)
+    description = models.TextField()
+    firstRequirement = models.ForeignKey(Expertise, related_name='first_req', blank=True, null=True, on_delete=models.CASCADE)
+    firstRequirementValue = models.IntegerField(blank=True, null=True)
+    secondRequirement = models.ForeignKey(Expertise, related_name='second_req', blank=True, null=True, on_delete=models.CASCADE)
+    secondRequirementValue = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        ordering = ['armorType']
+
+
+class Spell(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    elements = models.ManyToManyField(MagicElement, blank=True)
+    group = models.ForeignKey(MagicGroup, on_delete=models.CASCADE)
+    castingTime = models.CharField(max_length=255)
+    range = models.CharField(max_length=255)
+    manaCost = models.IntegerField()
+
+    ingredientCost = models.ManyToManyField(Item, blank=True)
+    health = models.IntegerField(blank=True, null=True)
+    heal = models.CharField(max_length=255, blank=True, null=True)
+    damage = models.CharField(max_length=255, blank=True, null=True)
+    damageType = models.ForeignKey(DamageType, on_delete=models.CASCADE, blank=True, null=True)
+    duration = models.CharField(max_length=255, blank=True, null=True)
+
+
+    def __str__(self):
+        return self.name
+
+
 class Specialization(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
@@ -119,19 +161,20 @@ class Specialization(models.Model):
     healDice = models.CharField(max_length=255)
     baseHP = models.IntegerField()
     levelHP = models.IntegerField()
-    baseEP = models.IntegerField()
-
-    expertiseAmout = models.IntegerField()
-    expertises = models.ManyToManyField(Expertise, blank=True)
-
-    startingWeapons = models.ManyToManyField(Weapon, blank=True)
-    startingTools = models.ManyToManyField(Item, blank=True)
-    startingMoney = models.CharField(max_length=255)
-    startingSkill = models.ForeignKey(Skill, on_delete=models.CASCADE)
+    baseMP = models.IntegerField()
 
     requiredElement = models.ForeignKey(MagicElement, on_delete=models.CASCADE, null=True, blank=True)
     requiredMagicGroup = models.ForeignKey(MagicGroup, on_delete=models.CASCADE, null=True, blank=True)
 
+    expertiseAmout = models.IntegerField()
+    expertises = models.ManyToManyField(Expertise, blank=True)
+
+    startingMoney = models.CharField(max_length=255)
+    startingWeapons = models.ManyToManyField(Weapon, blank=True)
+    startingArmor = models.ManyToManyField(Armor, blank=True)
+    startingTools = models.ManyToManyField(Item, blank=True)
+    startingSpells = models.ManyToManyField(Spell, blank=True)
+    startingSkill = models.ForeignKey(Skill, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -174,27 +217,6 @@ class Race(models.Model):
     
     class Meta:
         ordering = ['name']
-
-
-class Spell(models.Model):
-    name = models.CharField(max_length=255)
-    description = models.TextField()
-    elements = models.ManyToManyField(MagicElement, blank=True)
-    group = models.ForeignKey(MagicGroup, on_delete=models.CASCADE)
-    castingTime = models.CharField(max_length=255)
-    range = models.CharField(max_length=255)
-    manaCost = models.IntegerField()
-
-    ingredientCost = models.ManyToManyField(Item, blank=True)
-    health = models.IntegerField(blank=True, null=True)
-    heal = models.CharField(max_length=255, blank=True, null=True)
-    damage = models.CharField(max_length=255, blank=True, null=True)
-    damageType = models.ForeignKey(DamageType, on_delete=models.CASCADE, blank=True, null=True)
-    duration = models.CharField(max_length=255, blank=True, null=True)
-
-
-    def __str__(self):
-        return self.name
 
 
 class Character(models.Model):

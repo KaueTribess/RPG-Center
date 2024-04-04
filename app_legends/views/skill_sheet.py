@@ -19,4 +19,4 @@ class SkillSheet(View):
             'skill': skill,
         }
 
-        return render(request, 'legends/pages/skill_sheet.html', context)
+        return render(request, 'legends/pages/skill-sheet.html', context)

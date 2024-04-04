@@ -42,7 +42,7 @@ class CharacterSheet(View):
             'skills_form': skills_form,
         }
 
-        return render(request, 'legends/pages/character_sheet.html', context)
+        return render(request, 'legends/pages/character-sheet.html', context)
     
     def post(self, request, id):
         return redirect('legends:character_sheet', kwargs={'id': id})
