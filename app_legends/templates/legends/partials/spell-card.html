@@ -1,0 +1,48 @@
+<div class="spell-card-container {{spell.firstElement}}-top-border {% if spell.secondElement %}{{spell.secondElement}}-bottom-border{% else %}{{spell.firstElement}}-bottom-border{% endif %}">
+    <div class="spell-card-content">
+        <div class="spell-card-name"><h3>{{ spell.name }}</h3></div>
+        <div class="spell-card-origin">
+            {{ spell.spellType }} {{ spell.spellTier }} de {{ spell.firstElement }}{% if spell.secondElement %} e {{ spell.secondElement }}{% endif %}{% if spell.origin %} {{ spell.origin }}{% endif %}:
+        </div>
+        <div class="spell-card-properties">
+            <div class="spell-card-main-properties">
+                <div class="spell-card-casting-time">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> {{ spell.castingTime }}
+                </div>
+                <div class="spell-card-range">
+                    <i class="fa-solid fa-people-arrows"></i> {{ spell.range }}m
+                </div>
+                <div class="spell-card-mana-cost">
+                    <i class="fa-solid fa-bolt"></i> {{ spell.manaCost }} MP
+                </div>
+            </div>
+            <div class="spell-card-secondary-properties">
+                {% if spell.health %}
+                    <div class="spell-card-health">
+                        <i class="fa-solid fa-heart"></i> {{ spell.health }}
+                    </div>
+                {% endif %}
+                {% if spell.heal %}
+                    <div class="spell-card-heal">
+                        <i class="fa-solid fa-briefcase-medical"></i> {{ spell.heal }}
+                    </div>
+                {% endif %}
+                {% if spell.damage %}
+                    <div class="spell-card-damage">
+                        {{ spell.damageType.icon|safe }} {{ spell.damage }}
+                    </div>
+                {% endif %}
+                {% if spell.duration %}
+                    <div class="spell-card-duration">
+                        <i class="fa-regular fa-clock"></i> {{ spell.duration }}
+                    </div>
+                {% endif %}
+                {% if spell.areaOfEffect %}
+                    <div class="spell-card-area-effect">
+                        <i class="fa-solid fa-maximize"></i> {{ spell.areaOfEffect }}m³
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

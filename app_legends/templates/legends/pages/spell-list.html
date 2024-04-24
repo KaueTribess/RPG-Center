@@ -1,0 +1,25 @@
+{% extends "global/pages/base.html" %}
+
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "global/css/search.css" %}">
+    <link rel="stylesheet" href="{% static "legends/css/spell-list.css" %}">
+{% endblock style %}
+
+{% block title %}Magias | Legends{% endblock title %}
+
+{% block content %}
+    <div class="spell-list-container">
+        <h2>Conjurações</h2>
+        {% include "global/partials/search.html" %}
+        <div class="spell-list-content">
+            {% for spell in spells %}
+                {% include "legends/partials/spell-card.html" %}
+            {% empty %}
+                <p>Nenhuma magia encontrada.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
+

@@ -9,7 +9,7 @@
 {% block title %}{{ spell.name }} | Legends{% endblock title %}
 
 {% block content %}
-    <h1 class="spell-sheet-name">{{ spell.name }}</h1>
+    <h1 class="spell-sheet-name">{% for element in spell.elements.all %}{{ element.icon|safe }}{% endfor %}{{ spell.name }}</h1>
     <div class="spell-sheet-container">
         <div class="spell-sheet-description">
             <p>{{ spell.description }}</p>

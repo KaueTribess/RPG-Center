@@ -7,7 +7,8 @@ class CharacterEditLevel(View):
     
     def post(self, request, id):
         character = Character.objects.filter(id=id).first()
-        characterStats = CharacterStats.objects.filter(character=character).first()
+        character_stats = CharacterStats.objects.filter(character=character).first()
+        character_expertises = CharacterExpertise.objects.filter(character=character)
         new_level = int(request.POST.get('level'))
         if new_level > 20:
             new_level = 20
@@ -15,7 +16,9 @@ class CharacterEditLevel(View):
             new_level = 1
         character.level = new_level 
         character.save()
-        characterStats.save()
+        character_stats.save()
+        for expertise in character_expertises:
+            expertise.save()
             
         return redirect(reverse('legends:character_sheet', kwargs={'id': id}))
     

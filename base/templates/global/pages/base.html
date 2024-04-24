@@ -9,10 +9,23 @@
 <body>
     {% include "global/partials/header.html" %}
 
-    <main class="main-content-container">
-        {% block content %}{% endblock content %}
+    <main class="main-container">
+        <div class="menu-container">
+            {% comment %} Mudar depois para não ficar hard-coded {% endcomment %}
+            <div class="menu-system">
+                <a href="" class="menu-redirect">Início</a>
+                <a href="" class="menu-redirect">Personagens</a>
+                <a href="" class="menu-redirect">Criaturas</a>
+                <a href="" class="menu-redirect">Skills</a>
+                <a href="" class="menu-redirect">Spells</a>
+                <a href="" class="menu-redirect">Itens</a>
+            </div>
+        </div>
+        <div class="content-container">
+            {% block content %}{% endblock content %}
+        </div>
     </main>
 
-    {% include "global/partials/footer.html" %}
+    {% comment %} {% include "global/partials/footer.html" %} {% endcomment %}
 </body>
 </html>

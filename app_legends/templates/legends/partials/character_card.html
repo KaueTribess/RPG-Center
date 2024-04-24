@@ -1,0 +1,32 @@
+<div class="character-card-container">
+    <a href="{% url "legends:character_sheet" character.id %}" class="character-card-redirect">
+        <div class="character-card-ilustration">
+            <img src="{{ character.ilustration.url }}" alt="">
+        </div>
+        <div class="character-card-name">
+            <h3>{{ character.name }}</h3>
+            {% if character.title %}
+                <h5>{{ character.title }}</h5>
+            {% endif %}
+        </div>
+    </a>
+    <div class="character-card-data">
+        <div class="character-card-properties">
+            <div class="character-card-race">
+                <a href="{% url "legends:race" character.race.id %}">{{ character.race.name }}</a>
+            </div>
+            <div class="character-card-class">
+                <a href="">{{ character.specialization.name }}</a>
+            </div>
+             
+        </div>  
+        <div class="character-card-ownership">
+            <div class="character-card-creation">
+                Criado em {{ character.createdAt }}
+            </div>
+            <div class="character-card-creator">
+                por <a href="">{{ character.creator.username }}</a>
+            </div>
+        </div> 
+    </div>
+</div>

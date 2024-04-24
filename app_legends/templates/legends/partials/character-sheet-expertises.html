@@ -6,7 +6,10 @@
         </div>
         {% for expertise in attr.expertises.all %}
             <div class="expertise">
-                <p>{{ expertise.expertise }}: {{expertise.level}}</p>
+                <div class="expertise-info">
+                    <p class="{% if expertise.proficient %}proficient{% endif %} expertise-name">{{ expertise.expertise }}:</p>
+                    <p class="expertise-value">{{expertise.value}}</p>
+                </div>
                 <form action="{% url "legends:character_edit_expertise" character.id %}" method="POST">
                     {% if expertise.level > -1 %}
                         {% csrf_token %}

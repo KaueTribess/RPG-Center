@@ -34,6 +34,10 @@ class ItemTypeAdmin(admin.ModelAdmin):
 class ItemAdmin(admin.ModelAdmin):
     ...
 
+@admin.register(SpellOrigin)
+class SpellOriginAdmin(admin.ModelAdmin):
+    ...
+
 @admin.register(Spell)
 class SpellAdmin(admin.ModelAdmin):
     ...

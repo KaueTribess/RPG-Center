@@ -132,13 +132,40 @@ class Armor(models.Model):
         ordering = ['armorType']
 
 
-class Spell(models.Model):
+class SpellOrigin(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    elements = models.ManyToManyField(MagicElement, blank=True)
+
+    def __str__(self):
+        return self.name
+    
+
+class Spell(models.Model):
+    class SpellTypeName(models.TextChoices):
+        Encantamento = 'Encantamento', _('Encantamento')
+        Feitico = 'Feitiço', _('Feitiço')
+        Conjuracao = 'Conjuração', _('Conjuração')
+        Ritual = 'Ritual', _('Ritual')
+    class SpellTierName(models.TextChoices):
+        Simples = 'Simples', _('Simples')
+        Intermediaria = 'Intermediária', _('Intermediária')
+        Avancada = 'Avançada', _('Avançada')
+    class SpellExpertiseName(models.TextChoices):
+        Arcanismo = 'Arcanismo', _('Arcanismo')
+        Crenca = 'Crença', _('Crença')
+        Performance = 'Performance', _('Performance')
+
+    name = models.CharField(max_length=255)
+    origin = models.ForeignKey(SpellOrigin, on_delete=models.CASCADE, null=True, blank=True)
+    description = models.TextField()
+    firstElement = models.ForeignKey(MagicElement, related_name='first_element', on_delete=models.CASCADE, null=True, blank=True)
+    secondElement = models.ForeignKey(MagicElement, related_name='second_element', on_delete=models.CASCADE, null=True, blank=True)
+    spellType = models.CharField(max_length=12, choices=SpellTypeName.choices, default=SpellTypeName.Feitico)
+    spellTier = models.CharField(max_length=13, choices=SpellTierName.choices, default=SpellTierName.Simples)
+    spellExpertise = models.CharField(max_length=11, choices=SpellExpertiseName.choices, default=SpellExpertiseName.Arcanismo)
     group = models.ForeignKey(MagicGroup, on_delete=models.CASCADE)
     castingTime = models.CharField(max_length=255)
-    range = models.CharField(max_length=255)
+    range = models.FloatField()
     manaCost = models.IntegerField()
 
     ingredientCost = models.ManyToManyField(Item, blank=True)
@@ -147,6 +174,7 @@ class Spell(models.Model):
     damage = models.CharField(max_length=255, blank=True, null=True)
     damageType = models.ForeignKey(DamageType, on_delete=models.CASCADE, blank=True, null=True)
     duration = models.CharField(max_length=255, blank=True, null=True)
+    areaOfEffect = models.FloatField(blank=True, null=True)
 
 
     def __str__(self):
@@ -290,9 +318,17 @@ class CharacterExpertise(models.Model):
     expertise = models.ForeignKey(Expertise, on_delete=models.CASCADE)
     level = models.IntegerField()
     proficient = models.BooleanField(default=False)
+    value = models.IntegerField()
 
     def __str__(self):
         return f'{self.character.name} - {self.expertise.name}'
+    
+    def save(self, *args, **kwargs):
+        if self.proficient:
+            self.value = self.level + self.character.proficiency
+        else:
+            self.value = self.level
+        super(CharacterExpertise, self).save(*args, **kwargs)
     
 
 class CharacterAttribute(models.Model):
@@ -354,7 +390,7 @@ class CharacterStats(models.Model):
             self.currentHP = self.maxHP
 
         energia = self.corpo.expertises.filter(expertise__name="Energia").first().level
-        self.maxEP = specialization.baseEP + 5 * energia
+        self.maxEP = specialization.baseMP + 5 * energia
         if self.currentEP is None:
             self.currentEP = self.maxEP
 

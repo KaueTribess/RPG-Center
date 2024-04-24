@@ -17,6 +17,7 @@ urlpatterns = [
     path('race/<int:id>/', views.RaceSheet.as_view(), name="race"),
     path('specialization/<int:id>/', views.main_view, name="specialization"),
     path('skill/<int:id>/', views.SkillSheet.as_view(), name="skill"),
+    path('spell/list/', views.SpellList.as_view(), name="spell_list"),
     path('spell/<int:id>/', views.SpellSheet.as_view(), name="spell"),
     path('item/<int:id>/', views.main_view, name="item"),
     path('search/', views.main_view, name="search"),

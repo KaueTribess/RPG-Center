@@ -1,18 +1,13 @@
-<header class="main-header-container">
-    <div class="main-header-left">
-        <a href="{% url "main:home" %}" class="main-header-button">Início</a>
+{% load static %}
+
+<header class="header-container">
+    <div class="header-logo">
+        <a href="{% url "main:home" %}">
+            <img src="{% static "global/img/logo_temp.png" %}" alt="">
+        </a>
+    </div>
+    <div class="header-dropdowns">
         {% include "global/partials/systems-dropdown.html" %}
-    </div>
-    <div class="main-header-mid">
-        <h1>
-            <a href="">RPG Center
-                {% if header_title %}
-                    - {{ header_title }}
-                {% endif %}
-            </a>
-        </h1>
-    </div>
-    <div class="main-header-right">
         {% include "global/partials/profile-dropdown.html" %}
     </div>
 </header>
