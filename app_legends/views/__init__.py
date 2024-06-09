@@ -9,7 +9,16 @@ from .character_edit_stats_bars import CharacterEditStatsBars
 from .character_edit_level import CharacterEditLevel
 from .character_edit_skills import CharacterEditSkills
 
+from .character_weapon_create import CharacterWeaponCreate
+from .character_weapon_delete import CharacterWeaponDelete
+from .character_weapon_update_name import CharacterWeaponUpdateName
+from .character_weapon_update_weapon_type import CharacterWeaponUpdateWeaponType
+from .character_weapon_update_modifier import CharacterWeaponUpdateModifier
+from .character_weapon_update_damage_type import CharacterWeaponUpdateDamageType
+
+from .race_list import RaceList
 from .race_sheet import RaceSheet
+
 from .specialization_sheet import SpecializationSheet
 from .skill_sheet import SkillSheet
 

@@ -11,6 +11,36 @@ class Expertise(models.Model):
         return self.name
     
 
+class Effect(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TimeField()
+
+    def __str__(self):
+        return self.name
+
+
+class ItemType(models.Model):
+    type = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.type
+
+
+class Item(models.Model):
+    name = models.CharField(max_length=255)
+    type = models.ForeignKey(ItemType, on_delete=models.CASCADE)
+    ilustration = models.ImageField(upload_to=item_ilustration_upload, blank=True, null=True)
+    description = models.TextField()
+    weight = models.FloatField()
+    cost = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        ordering = ['type', 'name']
+
+
 class DamageType(models.Model):
     name = models.CharField(max_length=255)
     icon = models.CharField(max_length=255)
@@ -18,14 +48,9 @@ class DamageType(models.Model):
     def __str__(self):
         return self.name
     
+    class Meta:
+        ordering = ['name']
 
-class Modifier(models.Model):
-    name = models.CharField(max_length=255)
-    description = models.TextField()
-
-    def __str__(self):
-        return self.name
-    
 
 class WeaponTrait(models.Model):
     name = models.CharField(max_length=255)
@@ -33,29 +58,79 @@ class WeaponTrait(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        ordering = ['name']
 
 
-class WeaponType(models.Model):
-    type = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.type
-
-
-class Weapon(models.Model):
+class Modifier(models.Model):
     name = models.CharField(max_length=255)
+    manaCost = models.IntegerField(blank=True, null=True)
+    cost = models.IntegerField(default=0)
     description = models.TextField()
-    ilustration = models.ImageField(upload_to=weapon_ilustration_upload, blank=True, null=True)
-    range = models.CharField(max_length=255)
-    weight = models.FloatField()
-    traits = models.ManyToManyField(WeaponTrait, blank=True)
-    weaponType = models.ForeignKey(WeaponType, on_delete=models.CASCADE)
-    baseDamage = models.CharField(max_length=255)
-    damageType = models.ForeignKey(DamageType, on_delete=models.CASCADE)
-    Modifier = models.ForeignKey(Modifier, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        ordering = ['name', 'cost']
+
+
+class Weapon(models.Model):
+    class WeaponRarityName(models.TextChoices):
+        Comum = 'Comum', _('Comum')
+        Especial = 'Especial', _('Especial')
+
+    class WeaponTypeName(models.TextChoices):
+        Simples = 'Simples', _('Simples')
+        Avancada = 'Avançada', _('Avançada')
+
+    class WeaponCombatName(models.TextChoices):
+        Combate = 'Combate', _('Combate')
+        Precisao = 'Precisão', _('Precisão')
+
+    class ReloadType(models.TextChoices):
+        Rapido = 'Rápido', _('Rápido')
+        Medio = 'Médio', _('Médio')
+        Lento = 'Lento', _('Lento')
+
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    ilustration = models.ImageField(upload_to=weapon_ilustration_upload, blank=True, null=True)
+    rarity = models.CharField(max_length=8, choices=WeaponRarityName.choices, default=WeaponRarityName.Comum)
+    type = models.CharField(max_length=8, choices=WeaponTypeName.choices, default=WeaponTypeName.Simples)
+    combat = models.CharField(max_length=8, choices=WeaponCombatName.choices, default=WeaponCombatName.Combate)
+    
+    baseDamage = models.CharField(max_length=255)
+    damageType = models.ForeignKey(DamageType, on_delete=models.CASCADE)
+    cost = models.IntegerField(default=0)
+    weight = models.FloatField()
+    traits = models.ManyToManyField(WeaponTrait, blank=True)
+    modifiers = models.ManyToManyField(Modifier, blank=True)
+    combatRange = models.FloatField(default=1.5)
+
+    # POSSIBLE TRAIT FIELDS
+    shotRange = models.CharField(max_length=255, blank=True, null=True)
+    ammunition = models.ManyToManyField(Item, blank=True)
+    magazine = models.IntegerField(blank=True, null=True)
+    reloadTime = models.CharField(max_length=6, choices=ReloadType.choices, blank=True, null=True)
+    versatileDamage = models.CharField(max_length=255, blank=True, null=True)
+    area = models.FloatField(blank=True, null=True)
+    guardBlock = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        ordering = ['-combat', 'rarity', 'type', 'name']
+
+    def save(self, *args, **kwargs):
+        has_reach = self.traits.filter(
+            name='Alcance'
+        ).first()
+        if has_reach:
+            self.combatRange = 3
+        super(Weapon, self).save(*args, **kwargs)
 
 
 class MagicElement(models.Model):
@@ -74,25 +149,7 @@ class MagicGroup(models.Model):
     def __str__(self):
         return self.name
     
-
-class ItemType(models.Model):
-    type = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.type
-
-
-class Item(models.Model):
-    name = models.CharField(max_length=255)
-    type = models.ForeignKey(ItemType, on_delete=models.CASCADE)
-    ilustration = models.ImageField(upload_to=item_ilustration_upload, blank=True, null=True)
-    description = models.TextField()
-    weight = models.FloatField()
-
-    def __str__(self):
-        return self.name
     
-
 class Skill(models.Model):
     class SkillTypeName(models.TextChoices):
         Passiva = 'Passiva', _('Passiva')
@@ -119,11 +176,19 @@ class Armor(models.Model):
 
     name = models.CharField(max_length=255)
     armorType = models.CharField(max_length=7, choices=ArmorTypeName.choices, default=ArmorTypeName.Media)
+    cost = models.IntegerField(default=0)
+    weight = models.FloatField()
     description = models.TextField()
+
     firstRequirement = models.ForeignKey(Expertise, related_name='first_req', blank=True, null=True, on_delete=models.CASCADE)
     firstRequirementValue = models.IntegerField(blank=True, null=True)
     secondRequirement = models.ForeignKey(Expertise, related_name='second_req', blank=True, null=True, on_delete=models.CASCADE)
     secondRequirementValue = models.IntegerField(blank=True, null=True)
+
+    resistedDamages = models.ManyToManyField(DamageType, blank=True, related_name='resisted_dmg')
+    immunityDamages = models.ManyToManyField(DamageType, blank=True, related_name='immunity_dmg')
+    resistedEffects = models.ManyToManyField(Effect, blank=True, related_name='resisted_effect')
+    immunityEffects = models.ManyToManyField(Effect, blank=True, related_name='immunity_effect')
 
     def __str__(self):
         return self.name
@@ -191,8 +256,7 @@ class Specialization(models.Model):
     levelHP = models.IntegerField()
     baseMP = models.IntegerField()
 
-    requiredElement = models.ForeignKey(MagicElement, on_delete=models.CASCADE, null=True, blank=True)
-    requiredMagicGroup = models.ForeignKey(MagicGroup, on_delete=models.CASCADE, null=True, blank=True)
+    requiredElements = models.ManyToManyField(MagicElement, blank=True)
 
     expertiseAmout = models.IntegerField()
     expertises = models.ManyToManyField(Expertise, blank=True)
@@ -200,7 +264,8 @@ class Specialization(models.Model):
     startingMoney = models.CharField(max_length=255)
     startingWeapons = models.ManyToManyField(Weapon, blank=True)
     startingArmor = models.ManyToManyField(Armor, blank=True)
-    startingTools = models.ManyToManyField(Item, blank=True)
+    startingItems = models.ManyToManyField(Item, blank=True, related_name='items')
+    startingTools = models.ManyToManyField(Item, blank=True, related_name='tools')
     startingSpells = models.ManyToManyField(Spell, blank=True)
     startingSkill = models.ForeignKey(Skill, on_delete=models.CASCADE)
 
@@ -208,7 +273,7 @@ class Specialization(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['name']
+        ordering = ['-baseHP', 'name']
 
 
 class Race(models.Model):
@@ -232,7 +297,7 @@ class Race(models.Model):
     bodyType = models.CharField(max_length=7, choices=BodyTypeName.choices, default=BodyTypeName.Normal)
     height = models.TextField()
     baseMovement = models.FloatField()
-    magicAffinity = models.ForeignKey(MagicGroup, on_delete=models.CASCADE, null=True, blank=True)
+    magicAffinity = models.ManyToManyField(MagicElement, blank=True)
     attributeIncrease1 = models.CharField(max_length=12, choices=AttributeName.choices, null=True, blank=True)
     attributeIncreaseValue1 = models.IntegerField()
     attributeIncrease2 = models.CharField(max_length=12, choices=AttributeName.choices, null=True, blank=True)
@@ -255,14 +320,16 @@ class Character(models.Model):
     
     creator = models.ForeignKey(User, related_name='creator_user', on_delete=models.CASCADE)
     editor = models.ForeignKey(User, related_name='editor_user', blank=True, null=True, on_delete=models.CASCADE)
+
     race = models.ForeignKey(Race, on_delete=models.CASCADE)
     specialization = models.ForeignKey(Specialization, on_delete=models.CASCADE)
-    magicGroup = models.ForeignKey(MagicGroup, on_delete=models.CASCADE, null=True)
+    magicGroup = models.ForeignKey(MagicGroup, on_delete=models.CASCADE, null=True, blank=True)
     skills = models.ManyToManyField(Skill, blank=True)
     spells = models.ManyToManyField(Spell, blank=True)
+    armor = models.ForeignKey(Armor, on_delete=models.SET_NULL, null=True, blank=True)
 
-    
-    level = models.IntegerField()
+    crowns = models.IntegerField(default=0)
+    level = models.IntegerField(default=0)
     remainingPoints = models.IntegerField()
     proficiency = models.IntegerField(default=1)
     
@@ -290,28 +357,7 @@ class Inventory(models.Model):
 
     def __str__(self):
         return f'{self.item.name} x{self.amount}'
-    
-
-class Wallet(models.Model):
-    character = models.ForeignKey(Character, on_delete=models.CASCADE)
-    goldCoins = models.IntegerField()
-    silverCoins = models.IntegerField()
-
-    def __str__(self):
-        return self.character.name
-    
-
-class CharacterWeapon(models.Model):
-    character = models.ForeignKey(Character, on_delete=models.CASCADE)
-    weapon = models.ForeignKey(Weapon, on_delete=models.CASCADE)
-    amount = models.IntegerField()
-    weight = models.FloatField()
-    Modifier = models.ForeignKey(Modifier, on_delete=models.CASCADE)
-    finalDamage = models.CharField(max_length=255)
-
-    def __str__(self):
-        return f'{self.character.name} - {self.weapon.name} x{self.amount}'
-
+  
 
 class CharacterExpertise(models.Model):
     character = models.ForeignKey(Character, on_delete=models.CASCADE)
@@ -434,11 +480,74 @@ class CharacterStats(models.Model):
 class CharacterProficiencies(models.Model):
     character = models.ForeignKey(Character, on_delete=models.CASCADE)
     expertises = models.ManyToManyField(Expertise, blank=True)
-    weapons = models.ManyToManyField(WeaponType, blank=True)
+    weapons = models.ManyToManyField(Weapon, blank=True)
     elements = models.ManyToManyField(MagicElement, blank=True)
     tools = models.ManyToManyField(Item, blank=True)
 
     def __str__(self):
         return self.character.name
     
+
+class CharacterWeapon(models.Model):
+    character = models.ForeignKey(Character, on_delete=models.CASCADE)
+    weapon = models.ForeignKey(Weapon, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    damageType = models.ForeignKey(DamageType, on_delete=models.CASCADE, null=True, blank=True)
+    weight = models.FloatField()
+    modifier = models.ForeignKey(Modifier, on_delete=models.SET_NULL, null=True, blank=True)
+    attackRoll = models.CharField(max_length=255, null=True, blank=True)
+    finalDamage = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.character.name} - {self.weapon.name}'
+    
+    def save(self, *args, **kwargs):
+        match self.weapon.combat:
+            case 'Combate':
+                weapon_scaling = CharacterExpertise.objects.filter(
+                    character=self.character,
+                    expertise__name='Combate'
+                ).first()
+                attack_modifier = weapon_scaling.value
+                weapon_scaling = weapon_scaling.level
+            case 'Precisão':
+                weapon_scaling = CharacterExpertise.objects.filter(
+                    character=self.character,
+                    expertise__name='Precisão'
+                ).first()
+                attack_modifier = weapon_scaling.value
+                weapon_scaling = weapon_scaling.level
+            case _:
+                attack_modifier = 0
+                weapon_scaling = 0
+
+        is_arcane = self.weapon.traits.filter(
+            name='Arcana'
+        ).first()
+
+        if is_arcane:
+            weapon_scaling = CharacterExpertise.objects.filter(
+                character=self.character,
+                expertise__name='Arcanismo'
+            ).first().level
+
+        match weapon_scaling:
+            case weapon_scaling if weapon_scaling < 0:
+                weapon_scaling *= -1
+                self.finalDamage = f'{self.weapon.baseDamage} - {weapon_scaling}'
+            case 0:
+                self.finalDamage = f'{self.weapon.baseDamage}'
+            case weapon_scaling if weapon_scaling > 0:
+                self.finalDamage = f'{self.weapon.baseDamage} + {weapon_scaling}'
+
+        match attack_modifier:
+            case attack_modifier if attack_modifier < 0:
+                attack_modifier *= -1
+                self.attackRoll = f'1d20 - {attack_modifier}'
+            case 0:
+                self.attackRoll = '1d20'
+            case attack_modifier if attack_modifier > 0:
+                self.attackRoll = f'1d20 + {attack_modifier}'
+
+        super(CharacterWeapon, self).save(*args, **kwargs)
 

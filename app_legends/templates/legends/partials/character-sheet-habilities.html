@@ -1,0 +1,25 @@
+<div class="character-sheet-habilities">
+    <h2>HABILIDADES</h2>
+    <div class="habilities-container">
+        <div class="current-habilities-container">
+            <h3>Habilidades Atuais</h3>
+            <div class="current-habilities-grid">
+                {% for skill in character.skills.all %}
+                    <ul><li><a href="{% url "legends:skill" skill.id %}">{{ skill.name }}</a></li></ul>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="edit-habilities-container">
+            <h3>Editar</h3>
+            <form action="{% url "legends:character_edit_skills" character.id %}" method="post">
+                {% csrf_token %}
+                <div class="edit-habilities-grid">
+                    {% for field in skills_form %}
+                        {{ field }}
+                    {% endfor %}
+                </div>
+                <button type="submit">Atualizar</button>
+            </form>   
+        </div>
+    </div> 
+</div>

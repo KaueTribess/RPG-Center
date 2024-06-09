@@ -14,10 +14,11 @@
             {% comment %} Mudar depois para não ficar hard-coded {% endcomment %}
             <div class="menu-system">
                 <a href="" class="menu-redirect">Início</a>
-                <a href="" class="menu-redirect">Personagens</a>
+                <a href="{% url "legends:character_list" %}" class="menu-redirect">Personagens</a>
+                <a href="{% url "legends:race_list" %}" class="menu-redirect">Raças</a>
                 <a href="" class="menu-redirect">Criaturas</a>
                 <a href="" class="menu-redirect">Skills</a>
-                <a href="" class="menu-redirect">Spells</a>
+                <a href={% url "legends:spell_list" %} class="menu-redirect">Spells</a>
                 <a href="" class="menu-redirect">Itens</a>
             </div>
         </div>

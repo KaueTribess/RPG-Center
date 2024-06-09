@@ -1,34 +1,36 @@
-{% for attr in char_attrs %}
-    <div class="character-sheet-expertises-column">
-        <div class="character-sheet-expertises-title">
-            <h3>{{ attr.name }}:</h3>
-            <p>{{ attr.remaining }}</p>
-        </div>
-        {% for expertise in attr.expertises.all %}
-            <div class="expertise">
-                <div class="expertise-info">
-                    <p class="{% if expertise.proficient %}proficient{% endif %} expertise-name">{{ expertise.expertise }}:</p>
-                    <p class="expertise-value">{{expertise.value}}</p>
-                </div>
-                <form action="{% url "legends:character_edit_expertise" character.id %}" method="POST">
-                    {% if expertise.level > -1 %}
-                        {% csrf_token %}
-                        <input type="hidden" name="attribute_id" value="{{ attr.id }}">
-                        <input type="hidden" name="expertise_id" value="{{ expertise.id }}">
-                        <input type="hidden" name="type" value="decrease">
-                        <button class="expertise-edit-button"><i class="fa-solid fa-minus"></i></button>
-                    {% endif %}
-                </form>
-                <form action="{% url "legends:character_edit_expertise" character.id %}" method="POST">
-                    {% if attr.remaining > 0 and expertise.level < 10 %}
-                        {% csrf_token %}
-                        <input type="hidden" name="attribute_id" value="{{ attr.id }}">
-                        <input type="hidden" name="expertise_id" value="{{ expertise.id }}">
-                        <input type="hidden" name="type" value="raise">
-                        <button class="expertise-edit-button"><i class="fa-solid fa-plus"></i></button>
-                    {% endif %}
-                </form>
+<div class="character-sheet-expertises">   
+    {% for attr in char_attrs %}
+        <div class="character-sheet-expertises-column">
+            <div class="character-sheet-expertises-title">
+                <h3>{{ attr.name }}:</h3>
+                <p>{{ attr.remaining }}</p>
             </div>
-        {% endfor %}
-    </div>
-{% endfor %}
+            {% for expertise in attr.expertises.all %}
+                <div class="expertise">
+                    <div class="expertise-info">
+                        <p class="{% if expertise.proficient %}proficient{% endif %} expertise-name">{{ expertise.expertise }}:</p>
+                        <p class="expertise-value">{{expertise.value}}</p>
+                    </div>
+                    <form action="{% url "legends:character_edit_expertise" character.id %}" method="POST">
+                        {% if expertise.level > -1 %}
+                            {% csrf_token %}
+                            <input type="hidden" name="attribute_id" value="{{ attr.id }}">
+                            <input type="hidden" name="expertise_id" value="{{ expertise.id }}">
+                            <input type="hidden" name="type" value="decrease">
+                            <button class="expertise-edit-button"><i class="fa-solid fa-minus"></i></button>
+                        {% endif %}
+                    </form>
+                    <form action="{% url "legends:character_edit_expertise" character.id %}" method="POST">
+                        {% if attr.remaining > 0 and expertise.level < 10 %}
+                            {% csrf_token %}
+                            <input type="hidden" name="attribute_id" value="{{ attr.id }}">
+                            <input type="hidden" name="expertise_id" value="{{ expertise.id }}">
+                            <input type="hidden" name="type" value="raise">
+                            <button class="expertise-edit-button"><i class="fa-solid fa-plus"></i></button>
+                        {% endif %}
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>

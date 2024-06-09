@@ -11,44 +11,40 @@
 {% block title %}{{ character.name }} | Legends{% endblock title %}
 
 {% block content %}
-    <h2 class="character-sheet-name">{{ character.name }}{% if character.title %}, {{ character.title }}{% endif %}</h2>
+    <h2 class="character-sheet-name">{{ character.name }}</h2>
+    {% if character.title %}
+        <h5 class="character-sheet-title">{{ character.title }}</h5>
+    {% endif %}
     <div class="character-sheet-container">
-        <div class="character-sheet-header">
-            <div class="character-sheet-ilustration">
-                {% include "legends/partials/character-sheet-ilustration.html" %}
-            </div>
-            <div class="character-sheet-points">
-                <div class="character-sheet-attributes">
-                    {% for attr in char_attrs %}
-                        {% include "legends/partials/character-sheet-attribute-card.html" %}
-                    {% endfor %}
-                </div>
-                <div class="character-sheet-expertises">
-                    {% include "legends/partials/character-sheet-expertises.html" %}
-                </div>
-            </div>
-        </div>
+        {% include "legends/partials/character-sheet-header.html" %}
         {% include "legends/partials/character-sheet-stats.html" %}
-        <div class="habilities">
-            <div class="current-habilities">
-                <h3>Habilidades</h3>
-                <div class="habilities-grid">
-                    {% for skill in character.skills.all %}
-                        <ul><li><a href="{% url "legends:skill" skill.id %}">{{ skill.name }}</a></li></ul>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="edit-habilities">
-                <h3>Editar</h3>
-                <form action="{% url "legends:character_edit_skills" character.id %}" method="post">
-                    {% csrf_token %}
-                    <div class="habilities-container">
-                        {% for field in skills_form %}
-                            {{ field }}
+        {% include "legends/partials/character-sheet-habilities.html" %}
+        <div class="character-sheet-equipment">
+            <h2>EQUIPAMENTO</h2>
+            <div class="equipment-container">
+                <div class="weapons-container">
+                    <h3>Armas</h3>
+                    <div class="weapons-grid">
+                        {% include "legends/partials/character-sheet-weapon-card-header.html" %}
+                        {% for weapon in char_weapons %}
+                            {% include "legends/partials/character-sheet-weapon-card.html" %}
                         {% endfor %}
+                        <div class="weapon-add">
+                            <form action="{% url "legends:character_weapon_create" character.id %}" method="POST">
+                                {% csrf_token %}
+                                <button class="weapon-create-button"><i class="fa-solid fa-plus"></i> Adicionar Arma</button>
+                            </form>
+                        </div>
                     </div>
-                    <button type="submit">Atualizar</button>
-                </form>   
+                </div>
+                <div class="equiped-container">
+                    <div class="armor-container">
+                        <h3>Armadura</h3>
+                    </div>
+                    <div class="talismans-container">
+                        <h3>Talismãs</h3>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

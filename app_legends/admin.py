@@ -2,13 +2,17 @@ from django.contrib import admin
 from .models import *
 
 # Register your models here.
+@admin.register(Effect)
+class EffectAdmin(admin.ModelAdmin):
+    ...
+
 @admin.register(Race)
 class RaceAdmin(admin.ModelAdmin):
     ...
 
 @admin.register(Specialization)
 class SpecializationAdmin(admin.ModelAdmin):
-    ...
+    list_display = ['name', 'baseHP', 'baseMP', 'startingMoney']
     
 @admin.register(MagicElement)
 class MagicElementAdmin(admin.ModelAdmin):
@@ -32,7 +36,7 @@ class ItemTypeAdmin(admin.ModelAdmin):
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
-    ...
+    list_display = ['name', 'type', 'cost']
 
 @admin.register(SpellOrigin)
 class SpellOriginAdmin(admin.ModelAdmin):
@@ -54,25 +58,17 @@ class CharacterStatsAdmin(admin.ModelAdmin):
 class InventoryAdmin(admin.ModelAdmin):
     ...
 
-@admin.register(Wallet)
-class WalletAdmin(admin.ModelAdmin):
-    ...
-
 @admin.register(Modifier)
 class ModifierAdmin(admin.ModelAdmin):
-    ...
+    list_display = ['name']
 
 @admin.register(WeaponTrait)
 class WeaponTraitAdmin(admin.ModelAdmin):
     ...
 
-@admin.register(WeaponType)
-class WeaponTypeAdmin(admin.ModelAdmin):
-    ...
-
 @admin.register(Weapon)
 class WeaponAdmin(admin.ModelAdmin):
-    ...
+    list_display = ['name', 'rarity', 'type', 'combat', 'cost']
 
 @admin.register(Armor)
 class ArmorAdmin(admin.ModelAdmin):

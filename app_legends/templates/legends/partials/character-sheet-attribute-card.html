@@ -1,20 +1,22 @@
 <div class="attribute-card-container">
     <div class="attribute-card-content">
-        <div class="attribute-card-remaining">
-        </div>
         <div class="attribute-card-level">
             <form action="{% url "legends:character_edit_attribute" character.id %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="attribute_id" value="{{ attr.id }}">
                 <input type="hidden" name="type" value="decrease">
-                <button class="attribute-edit-button"><i class="fa-solid fa-minus"></i></button>
+                {% if attr.remaining > 0 %}
+                    <button class="attribute-edit-button"><i class="fa-solid fa-minus"></i></button>
+                {% endif %}  
             </form>
             <h2>{{ attr.level }}</h2>
             <form action="{% url "legends:character_edit_attribute" character.id %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="attribute_id" value="{{ attr.id }}">
                 <input type="hidden" name="type" value="raise">
-                <button class="attribute-edit-button"><i class="fa-solid fa-plus"></i></button>
+                {% if character.remainingPoints > 0 %}
+                    <button class="attribute-edit-button"><i class="fa-solid fa-plus"></i></button>
+                {% endif %}
             </form>
         </div>
         <div class="attribute-card-name">

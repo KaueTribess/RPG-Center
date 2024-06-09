@@ -20,7 +20,7 @@ class CharacterEditAttribute(View):
                     attribute.save()
                     character.save()
             if request.POST.get('type') == 'decrease':
-                if attribute.level > 0:
+                if attribute.level > 0 and attribute.remaining > 0:
                     attribute.level -= 1
                     attribute.save()
                     character.save()

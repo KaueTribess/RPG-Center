@@ -1,0 +1,24 @@
+{% extends "global/pages/base.html" %}
+
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "global/css/search.css" %}">
+    <link rel="stylesheet" href="{% static "legends/css/race-list.css" %}">
+{% endblock style %}
+
+{% block title %}Raças | Legends{% endblock title %}
+
+{% block content %}
+    <div class="race-list-container">
+        <h2>Raças</h2>
+        {% include "global/partials/search.html" %}
+        <div class="race-list-content">
+            {% for race in playable_races %}
+                {{ race.name }}
+            {% empty %}
+                <p>Nenhuma magia encontrada.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

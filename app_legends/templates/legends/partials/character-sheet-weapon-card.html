@@ -1,0 +1,75 @@
+<div class="weapon-card">
+    <div class="weapon-card-name">
+        <form action="{% url "legends:character_weapon_update_name" weapon.id %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="weapon_name" value="{{ weapon.name }}"> 
+        </form>
+    </div>
+    <div class="weapon-card-weapon-type">
+        <form action="{% url "legends:character_weapon_update_weapon_type" weapon.id %}" method="POST">
+            {% csrf_token %}
+            <select name="weapon_type" value="{{ weapon.weapon.name }}">
+                {% for base in base_weapons %}
+                    <option {% if weapon.weapon.name == base.name %} selected="selected" class="weapon-card-selected" {% endif %} value="{{ base.name }}">{{ base.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit"><i class="fa-solid fa-check"></i></button>
+        </form>
+    </div>
+    <div class="weapon-card-modifier">
+        <form action="{% url "legends:character_weapon_update_modifier" weapon.id %}" method="POST">
+            {% csrf_token %}
+            <select name="weapon_modifier">
+                {% if weapon.modifier %}
+                    <option value="Nenhum">Nenhum</option>   
+                    <option selected="select" value="{{ weapon.modifier.name }}">{{ weapon.modifier.name }}</option>
+                {% else %}
+                    <option selected="selected" value="Nenhum">Nenhum</option>   
+                {% endif %}
+                
+                {% for modifier in weapon.weapon.modifiers.all %}
+                    {% if weapon.modifier != modifier %}
+                        <option value="{{ modifier.name }}">{{ modifier.name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <button type="submit"><i class="fa-solid fa-check"></i></button>
+        </form>
+    </div>
+    <div class="weapon-card-combat-range">
+        {{ weapon.weapon.combatRange }} metros
+    </div>
+    <div class="weapon-card-shot-range">
+        {% if weapon.weapon.shotRange %}
+            {{ weapon.weapon.shotRange }} metros
+        {% else %}
+            - - - metros                                  
+        {% endif %}
+    </div>
+    <div class="weapon-card-attack">
+        {{ weapon.attackRoll }}
+    </div>
+    <div class="weapon-card-damage">
+        {{ weapon.finalDamage }}
+    </div>
+    <div class="weapon-card-damage-type">
+        <form action="{% url "legends:character_weapon_update_damage_type" weapon.id %}" method="POST">
+            {% csrf_token %}
+            <select name="weapon_damage_type" value="{{ weapon.damageType.name }}">
+                {% for damage_type in damage_types %}
+                    <option {% if weapon.damageType.name == damage_type.name %} selected="selected" {% endif %} value="{{ damage_type.name }}">{{ damage_type.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit"><i class="fa-solid fa-check"></i></button>
+        </form>
+    </div>
+    <div class="weapon-card-weight">
+        <input type="text" name="weapon_weight" value="{{ weapon.weapon.weight }}"> Kg
+    </div>
+    <div class="weapon-card-delete">
+        <form action="{% url "legends:character_weapon_delete" weapon.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit"><i class="fa-solid fa-trash"></i></button>
+        </form>
+    </div>
+</div>  

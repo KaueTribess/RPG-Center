@@ -37,7 +37,7 @@
                 Raça<i class="fa-solid fa-person"></i><div class="race-points"><a href="{% url "legends:race" character.race.id %}">{{ character.race }}</a></div> 
             </div>
             <div class="specialization-stats">
-                Classe<i class="fa-solid fa-screwdriver-wrench"></i><div class="specialization-points"><a href="">{{ character.specialization }}</a></div> 
+                Classe<i class="fa-solid fa-screwdriver-wrench"></i><div class="specialization-points"><a href="{% url "legends:specialization" character.specialization.id %}">{{ character.specialization }}</a></div> 
             </div>
         </div>
     </div>
